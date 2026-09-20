@@ -1,0 +1,63 @@
+{
+  "model_name": "drishti_sonar_yolov8s",
+  "task": "detect",
+  "architecture": "YOLOv8s-Sonar",
+  "input_shape": [1, 3, 640, 640],
+  "dataset": "rehan9599/drishti-sss",
+  "target_organization": "Ministry of Earth Sciences (MoES) / National Institute of Ocean Technology (NIOT)",
+  "problem_statement": "SIH26057 - AI-Powered Automated Underwater Marine Debris and Anomaly Detection System using SSS Imagery",
+  "num_classes": 5,
+  "classes": {
+    "0": "empty_seabed",
+    "1": "submarine_pipeline",
+    "2": "shipwreck",
+    "3": "ghost_net",
+    "4": "mine_cylinder"
+  },
+  "class_details": {
+    "0": {
+      "name": "empty_seabed",
+      "display_name": "Empty Seabed (Hard Negative)",
+      "color": "#64748B",
+      "hazard_level": "None",
+      "description": "Natural sand ripples, sedimentary seabed, acoustic noise baseline"
+    },
+    "1": {
+      "name": "submarine_pipeline",
+      "display_name": "Submarine Pipeline",
+      "color": "#10B981",
+      "hazard_level": "Infrastructure",
+      "description": "High-priority subsea linear asset requiring clearance & regular survey"
+    },
+    "2": {
+      "name": "shipwreck",
+      "display_name": "Shipwreck",
+      "color": "#3B82F6",
+      "hazard_level": "Navigation Hazard",
+      "description": "Submerged hull anomaly, navigational obstacle, structural debris"
+    },
+    "3": {
+      "name": "ghost_net",
+      "display_name": "Ghost Fishing Net",
+      "color": "#EF4444",
+      "hazard_level": "Critical Ecological Hazard",
+      "description": "Derelict fishing gear trapping marine life; highest cleanup priority"
+    },
+    "4": {
+      "name": "mine_cylinder",
+      "display_name": "Cylindrical Anomaly / Mine",
+      "color": "#F59E0B",
+      "hazard_level": "High Threat Explosive Hazard",
+      "description": "Subsea cylindrical object, UXO or unexploded ordnance hazard"
+    }
+  },
+  "metrics": {
+    "ghost_net_map50": 0.995,
+    "ghost_net_recall": 1.000,
+    "submarine_pipeline_map50": 0.994,
+    "submarine_pipeline_recall": 1.000,
+    "overall_map50": 0.750,
+    "inference_latency_ms": 18.5,
+    "edge_device": "CPU / ONNX Runtime"
+  }
+}

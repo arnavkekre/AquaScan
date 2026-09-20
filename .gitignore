@@ -1,0 +1,33 @@
+# Virtual environments
+backend/env/
+env/
+venv/
+.venv/
+
+# Node dependencies & builds
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+.vite/
+frontend/.vite/
+
+# Python cache & tests
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary archives
+*.zip
+.DS_Store
+Thumbs.db
+
+# Environment variables & IDE
+.env
+.env.local
+.vscode/
+.idea/
