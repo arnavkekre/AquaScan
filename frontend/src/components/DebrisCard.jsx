@@ -10,6 +10,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 
+
 export default function DebrisCard({ detection, onClose }) {
   if (!detection) return null;
 
