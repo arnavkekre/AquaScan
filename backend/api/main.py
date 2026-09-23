@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response, JSONResponse
+from fastapi.responses import Response, JSONResponse, FileResponse
 
 # Add parent directory to sys.path for internal imports
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,8 +56,26 @@ app.add_middleware(
 detector = SonarDetector()
 geotagger = GeotaggingEngine()
 
+import shutil
+
+# Ensure sample tiles are mirrored to frontend/public/tiles for static fallback
+FRONTEND_PUBLIC_TILES = os.path.join(os.path.dirname(BACKEND_DIR), "frontend", "public", "tiles")
+sample_tiles_dir = os.path.join(BACKEND_DIR, "data", "sample_tiles")
+if os.path.exists(sample_tiles_dir):
+    try:
+        os.makedirs(FRONTEND_PUBLIC_TILES, exist_ok=True)
+        for tile_name in os.listdir(sample_tiles_dir):
+            if tile_name.lower().endswith(('.jpg', '.png', '.jpeg')):
+                src_file = os.path.join(sample_tiles_dir, tile_name)
+                dst_file = os.path.join(FRONTEND_PUBLIC_TILES, tile_name)
+                if not os.path.exists(dst_file):
+                    shutil.copy2(src_file, dst_file)
+    except Exception:
+        pass
+
 # In-memory mission store for current session's findings
 MISSION_DETECTIONS: List[dict] = []
+
 
 
 def bgr_to_base64(img_bgr: np.ndarray, quality: int = 90) -> str:
@@ -168,6 +186,16 @@ def list_samples():
                     filesize_bytes=os.path.getsize(f_path)
                 ))
     return samples
+
+
+@app.get("/api/samples/{filename}")
+def get_sample_tile(filename: str):
+    """Serves the raw sample sonar tile image file directly."""
+    sample_path = os.path.join(BACKEND_DIR, "data", "sample_tiles", filename)
+    if not os.path.exists(sample_path):
+        raise HTTPException(status_code=404, detail="Sample sonar tile not found")
+    return FileResponse(sample_path, media_type="image/jpeg")
+
 
 
 def run_full_pipeline(img_bgr: np.ndarray, telemetry: TelemetryData, conf_threshold: float = 0.25) -> DetectionResponse:

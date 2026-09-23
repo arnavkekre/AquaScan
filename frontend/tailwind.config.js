@@ -7,6 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
+        crimson: {
+          DEFAULT: '#e11d48',
+          hover: '#be123c',
+          dark: '#9f1239',
+          light: '#fb7185',
+        },
+        dark: {
+          DEFAULT: '#121212',
+          surface: '#1a1a1a',
+          elevated: '#242424',
+          border: 'rgba(255, 255, 255, 0.08)',
+        },
         ocean: {
           950: '#030712',
           900: '#070E1E',
@@ -24,9 +36,21 @@ export default {
           purple: '#8B5CF6'
         }
       },
+      borderRadius: {
+        '40px': '40px',
+        '2.5rem': '2.5rem',
+        '3rem': '3rem',
+      },
       fontFamily: {
+        calsans: ['Cal Sans', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
         mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Poppins', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      transitionTimingFunction: {
+        luxury: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce-soft': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'smooth': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
       },
       animation: {
         'pulse-slow':     'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

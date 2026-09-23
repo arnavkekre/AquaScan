@@ -31,3 +31,5 @@ Thumbs.db
 .env.local
 .vscode/
 .idea/
+powershell.bat
+powershell.cmd

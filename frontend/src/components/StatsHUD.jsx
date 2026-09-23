@@ -5,7 +5,8 @@ import {
   CheckCircle2, 
   Activity, 
   Zap,
-  ShieldAlert
+  ShieldAlert,
+  Radio
 } from 'lucide-react';
 import { useAnimatedCounter } from '../hooks';
 
@@ -16,15 +17,15 @@ function StatCard({ stat, index, visible }) {
 
   return (
     <div
-      className="stat-card-glow glass-panel rounded-xl p-4 border border-ocean-800 flex flex-col justify-between"
+      className="rounded-2xl p-4 bg-[#1a1a1a] border border-white/10 hover:border-crimson/40 flex flex-col justify-between shadow-lg transition-all duration-300"
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-        transition: `opacity 0.55s ease ${index * 90}ms, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 90}ms`,
+        transform: visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.96)',
+        transition: `opacity 0.5s ease ${index * 80}ms, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 80}ms`,
       }}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className="text-[10px] font-mono tracking-wider text-slate-500 uppercase">
+        <span className="text-[10px] font-poppins font-bold tracking-widest text-zinc-400 uppercase">
           {stat.label}
         </span>
         <div
@@ -38,18 +39,18 @@ function StatCard({ stat, index, visible }) {
       <div>
         <div
           ref={counterRef}
-          className={`text-2xl font-mono font-bold tracking-tight ${stat.color}`}
+          className={`text-2xl font-calsans font-bold tracking-tight ${stat.color}`}
         >
           {stat.value}
         </div>
-        <div className="text-[10px] text-slate-500 mt-0.5 truncate font-medium">
+        <div className="text-[10px] text-zinc-500 mt-0.5 truncate font-poppins font-medium">
           {stat.subtext}
         </div>
       </div>
 
       {/* Bottom accent bar */}
       <div
-        className="mt-3 h-0.5 rounded-full opacity-40"
+        className="mt-3 h-0.5 rounded-full opacity-60"
         style={{ background: `linear-gradient(90deg, ${stat.glowColor}, transparent)` }}
       />
     </div>
@@ -68,7 +69,6 @@ export default function StatsHUD({
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
 
-  // Trigger counter animation when scrolled into view
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -84,21 +84,21 @@ export default function StatsHUD({
     {
       label:     'TOTAL ANOMALIES',
       value:     totalDetections,
-      icon:      Waves,
-      color:     'text-sonar-cyan',
-      border:    'border-sonar-cyan/30',
-      bg:        'bg-sonar-cyan/10',
-      glowColor: 'rgba(0,240,255,0.3)',
+      icon:      Radio,
+      color:     'text-white',
+      border:    'border-crimson/30',
+      bg:        'bg-crimson/15',
+      glowColor: 'rgba(225,29,72,0.4)',
       subtext:   'Classified Subsea Hazards'
     },
     {
       label:     'GHOST FISHING NETS',
       value:     ghostNets,
       icon:      AlertOctagon,
-      color:     'text-rose-400',
-      border:    'border-rose-500/30',
-      bg:        'bg-rose-500/10',
-      glowColor: 'rgba(244,63,94,0.3)',
+      color:     'text-crimson',
+      border:    'border-crimson/30',
+      bg:        'bg-crimson/10',
+      glowColor: 'rgba(225,29,72,0.3)',
       subtext:   'P1 Ecological Priority'
     },
     {
@@ -112,14 +112,14 @@ export default function StatsHUD({
       subtext:   'Infrastructure Assets'
     },
     {
-      label:     'DESPECKLE FILTER',
+      label:     'LEE GAIN RATIO',
       value:     `${noiseReductionPct}%`,
       icon:      Activity,
-      color:     'text-teal-400',
-      border:    'border-teal-500/30',
-      bg:        'bg-teal-500/10',
-      glowColor: 'rgba(20,184,166,0.3)',
-      subtext:   '7×7 Lee Acoustic Gain'
+      color:     'text-zinc-200',
+      border:    'border-white/20',
+      bg:        'bg-white/10',
+      glowColor: 'rgba(255,255,255,0.2)',
+      subtext:   '7×7 Adaptive Despeckle'
     },
     {
       label:     'EDGE LATENCY',
@@ -129,12 +129,12 @@ export default function StatsHUD({
       border:    'border-amber-500/30',
       bg:        'bg-amber-500/10',
       glowColor: 'rgba(245,158,11,0.3)',
-      subtext:   'Pure CPU ONNX Runtime'
+      subtext:   'CPU ONNX Inference'
     }
   ];
 
   return (
-    <div ref={ref} className="grid grid-cols-2 md:grid-cols-5 gap-3">
+    <div ref={ref} className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
       {stats.map((stat, i) => (
         <StatCard key={i} stat={stat} index={i} visible={visible} />
       ))}

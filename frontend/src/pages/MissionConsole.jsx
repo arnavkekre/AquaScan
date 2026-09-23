@@ -9,29 +9,31 @@ import {
   Compass, 
   AlertTriangle,
   FolderOpen,
-  Activity
+  Activity,
+  Radio,
+  SlidersHorizontal
 } from 'lucide-react';
 import { fetchSamples, detectSample, detectUpload } from '../services/api';
 import WaterfallViewer from '../components/WaterfallViewer';
 import DebrisCard from '../components/DebrisCard';
 import StatsHUD from '../components/StatsHUD';
 
-/** Animated range slider with colored fill */
-function SonarSlider({ label, value, min, max, step, onChange, color = '#00F0FF', unit = '' }) {
+/** Animated luxury range slider with crimson fill */
+function SonarSlider({ label, value, min, max, step, onChange, color = '#e11d48', unit = '' }) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
     <div className="group">
-      <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-2">
-        <span className="tracking-wider">{label}</span>
-        <span className="font-bold transition-all duration-300" style={{ color }}>
+      <div className="flex items-center justify-between text-xs font-poppins text-zinc-400 mb-2">
+        <span className="tracking-wide uppercase font-medium text-[11px]">{label}</span>
+        <span className="font-calsans font-bold text-sm tracking-wider" style={{ color }}>
           {value}{unit}
         </span>
       </div>
-      <div className="relative h-1.5 rounded-full bg-ocean-800">
+      <div className="relative h-2 rounded-full bg-[#121212] border border-white/10">
         {/* Filled track */}
         <div
-          className="absolute top-0 left-0 h-full rounded-full transition-all duration-200"
-          style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }}
+          className="absolute top-0 left-0 h-full rounded-full transition-all duration-150"
+          style={{ width: `${pct}%`, background: `linear-gradient(90deg, #be123c, ${color})` }}
         />
         <input
           type="range"
@@ -40,16 +42,16 @@ function SonarSlider({ label, value, min, max, step, onChange, color = '#00F0FF'
           step={step}
           value={value}
           onChange={onChange}
-          className="absolute inset-0 w-full opacity-0 cursor-pointer h-full"
+          className="absolute inset-0 w-full opacity-0 cursor-pointer h-full z-10"
         />
         {/* Thumb */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 shadow-lg transition-all duration-200 group-hover:scale-125"
+          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 shadow-lg transition-all duration-150 group-hover:scale-125"
           style={{
-            left: `calc(${pct}% - 7px)`,
+            left: `calc(${pct}% - 8px)`,
             borderColor: color,
-            background: '#030712',
-            boxShadow: `0 0 8px ${color}88`,
+            background: '#ffffff',
+            boxShadow: `0 0 10px ${color}aa`,
           }}
         />
       </div>
@@ -150,9 +152,9 @@ export default function MissionConsole() {
   const mines       = detections.filter(d => d.class_name === 'mine_cylinder').length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-poppins">
 
-      {/* ── Header ─────────────────────────────────────── */}
+      {/* ── Page Header ─────────────────────────────────────── */}
       <div
         className="flex flex-wrap items-center justify-between gap-4"
         style={{
@@ -162,31 +164,32 @@ export default function MissionConsole() {
         }}
       >
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <div className="relative">
-              <Waves className="w-6 h-6 text-sonar-cyan" style={{ animation: 'float 4s ease-in-out infinite' }} />
-            </div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson/10 border border-crimson/30 text-crimson text-xs font-bold tracking-widest uppercase mb-2">
+            <span>TACTICAL ACOUSTIC TELEMETRY</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-calsans font-black text-white uppercase flex items-center gap-3">
+            <Radio className="w-8 h-8 text-crimson" />
             Side-Scan Sonar Waterfall Console
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Real-time acoustic despeckling, ONNX AI detection, and acoustic shadow height profiling.
+          <p className="text-sm text-zinc-400 mt-1 max-w-2xl">
+            Real-time acoustic despeckling (7x7 Lee Filter), YOLOv8s subsea target inference, and IHO S-44 shadow profiling.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <label className="btn-shimmer flex items-center gap-2 px-4 py-2 rounded-xl bg-ocean-900 border border-ocean-700 hover:border-sonar-cyan/50 text-slate-200 text-xs font-mono font-medium cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95">
-            <Upload className="w-3.5 h-3.5 text-sonar-cyan" />
-            <span>Upload SSS File</span>
+          <label className="btn-luxury-dark flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-calsans font-bold tracking-wider cursor-pointer transition-all hover:scale-105 active:scale-95">
+            <Upload className="w-4 h-4 text-crimson" />
+            <span>UPLOAD SSS FILE</span>
             <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
           </label>
 
           <button
             onClick={() => runDetection(selectedSample)}
             disabled={loading || !selectedSample}
-            className="btn-shimmer flex items-center gap-2 px-4 py-2 rounded-xl bg-sonar-cyan text-ocean-950 font-bold text-xs font-mono hover:bg-sonar-teal disabled:opacity-50 transition-all duration-300 shadow-md shadow-sonar-cyan/25 hover:shadow-sonar-cyan/40 hover:scale-105 active:scale-95 disabled:scale-100"
+            className="btn-crimson flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-calsans font-bold tracking-wider uppercase shadow-lg shadow-crimson/25 hover:shadow-crimson/40 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100 transition-all"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>{loading ? 'Processing...' : 'Reprocess Swath'}</span>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'ANALYZING SWATH...' : 'REPROCESS SWATH'}</span>
           </button>
         </div>
       </div>
@@ -202,25 +205,25 @@ export default function MissionConsole() {
         noiseReductionPct={result?.speckle_metrics?.noise_reduction_pct || 68.4}
       />
 
-      {/* ── Controls Bar ───────────────────────────────── */}
+      {/* ── Telemetry & Sliders Bar ────────────────────── */}
       <div
-        className="glass-panel rounded-2xl p-5 border border-ocean-800 grid grid-cols-1 md:grid-cols-4 gap-6"
+        className="rounded-[2rem] p-6 bg-[#1a1a1a] border border-white/10 shadow-xl grid grid-cols-1 md:grid-cols-4 gap-6"
         style={{
           opacity: mounted ? 1 : 0,
           transform: mounted ? 'translateY(0)' : 'translateY(12px)',
           transition: 'opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s',
         }}
       >
-        {/* Sample dropdown */}
+        {/* Sample Swath Dropdown */}
         <div>
-          <label className="block text-[11px] font-mono text-slate-400 mb-2 flex items-center gap-1.5 tracking-wider">
-            <FolderOpen className="w-3.5 h-3.5 text-sonar-cyan" />
-            TEST SONAR SWATH
+          <label className="block text-[11px] font-bold text-zinc-400 mb-2 flex items-center gap-1.5 tracking-wider uppercase">
+            <FolderOpen className="w-3.5 h-3.5 text-crimson" />
+            BENCHMARK SSS SWATH
           </label>
           <select
             value={selectedSample}
             onChange={handleSampleChange}
-            className="w-full bg-ocean-950 border border-ocean-700 rounded-xl px-3 py-2.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-sonar-cyan transition-colors duration-300 cursor-pointer hover:border-ocean-600"
+            className="w-full bg-[#121212] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-poppins text-white focus:outline-none focus:border-crimson transition-colors duration-200 cursor-pointer"
           >
             {samples.map((s) => (
               <option key={s.filename} value={s.filename}>{s.display_title}</option>
@@ -229,11 +232,11 @@ export default function MissionConsole() {
         </div>
 
         <SonarSlider
-          label="AI CONFIDENCE FILTER"
+          label="AI CONFIDENCE GATE"
           value={confThreshold}
           min={0.05} max={0.95} step={0.05}
           onChange={(e) => setConfThreshold(parseFloat(e.target.value))}
-          color="#00F0FF"
+          color="#e11d48"
           unit=""
         />
 
@@ -242,28 +245,25 @@ export default function MissionConsole() {
           value={altitudeM}
           min={5} max={30} step={1}
           onChange={(e) => setAltitudeM(parseFloat(e.target.value))}
-          color="#0DF5C4"
+          color="#e11d48"
           unit="m"
         />
 
         <SonarSlider
-          label="SWATH COVERAGE"
+          label="SWATH RANGE (W)"
           value={swathWidthM}
           min={50} max={250} step={25}
           onChange={(e) => setSwathWidthM(parseFloat(e.target.value))}
-          color="#10B981"
+          color="#e11d48"
           unit="m"
         />
       </div>
 
       {/* ── Error Banner ────────────────────────────────── */}
       {error && (
-        <div
-          className="p-4 rounded-xl bg-red-500/15 border border-red-500/30 text-xs font-mono text-red-200 flex items-center gap-2"
-          style={{ animation: 'fadeUp 0.4s ease forwards' }}
-        >
-          <AlertTriangle className="w-4 h-4 text-red-400 flex-shrink-0" />
-          <span>Error: {error}</span>
+        <div className="p-4 rounded-xl bg-crimson/15 border border-crimson/40 text-xs font-poppins text-crimson-light flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-crimson flex-shrink-0" />
+          <span>Error processing sonar telemetry: {error}</span>
         </div>
       )}
 
@@ -281,44 +281,44 @@ export default function MissionConsole() {
 
         <div className="space-y-4">
           {selectedDetection ? (
-            <div style={{ animation: 'scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' }}>
+            <div className="transition-all duration-300">
               <DebrisCard
                 detection={selectedDetection}
                 onClose={() => setSelectedDetection(null)}
               />
             </div>
           ) : (
-            <div className="glass-panel rounded-2xl p-8 border border-ocean-800 text-center">
+            <div className="rounded-[2.5rem] p-8 bg-[#1a1a1a] border border-white/10 text-center shadow-xl">
               <div className="relative mx-auto w-12 h-12 mb-4">
-                <Compass className="w-12 h-12 text-slate-600 mx-auto" style={{ animation: 'float 5s ease-in-out infinite' }} />
+                <Compass className="w-12 h-12 text-zinc-600 mx-auto" />
               </div>
-              <h4 className="font-mono text-sm font-semibold text-slate-300 mb-2">
+              <h4 className="font-calsans text-base font-bold text-white mb-2 uppercase">
                 Select Anomaly to Inspect
               </h4>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Click on any bounding box or target pill in the waterfall console to view physical dimensions, WGS-84 coordinates, and MoES clearance protocols.
+              <p className="text-xs text-zinc-400 font-poppins leading-relaxed">
+                Click on any highlighted anomaly pill in the waterfall viewer to inspect its shadow triangulation, WGS-84 coordinates, and MoES clearance protocols.
               </p>
             </div>
           )}
 
-          {/* Acoustic Physics Reference */}
-          <div className="glass-panel rounded-2xl p-4 border border-ocean-800 font-mono text-xs space-y-2">
-            <div className="flex items-center gap-2 text-[11px] font-bold text-sonar-cyan tracking-wider uppercase mb-3">
-              <Activity className="w-3.5 h-3.5" />
-              Acoustic Physics Grounding
+          {/* Acoustic Physics Reference Card */}
+          <div className="rounded-[2rem] p-5 bg-[#1a1a1a] border border-white/10 font-poppins text-xs space-y-2.5 shadow-xl">
+            <div className="flex items-center gap-2 text-xs font-calsans font-bold text-crimson tracking-wider uppercase mb-2">
+              <Activity className="w-4 h-4" />
+              <span>Acoustic Physics Grounding</span>
             </div>
-            <div className="text-slate-400 text-[11px] leading-relaxed space-y-1.5">
-              <div className="flex items-start gap-2 hover:text-slate-300 transition-colors duration-200">
-                <span className="text-sonar-cyan mt-0.5">•</span>
-                <span><strong className="text-slate-300">Ground Range:</strong> G = √(R<sub>s</sub>² − H²)</span>
+            <div className="text-zinc-400 text-xs leading-relaxed space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="text-crimson font-bold">•</span>
+                <span><strong className="text-white">Ground Range Projection:</strong> G = √(R<sub>s</sub>² − H²)</span>
               </div>
-              <div className="flex items-start gap-2 hover:text-slate-300 transition-colors duration-200">
-                <span className="text-sonar-cyan mt-0.5">•</span>
-                <span><strong className="text-slate-300">Object Height:</strong> h = (H · L<sub>s</sub>) / R<sub>s</sub></span>
+              <div className="flex items-start gap-2">
+                <span className="text-crimson font-bold">•</span>
+                <span><strong className="text-white">Acoustic Shadow Height:</strong> h = (H · L<sub>s</sub>) / R<sub>s</sub></span>
               </div>
-              <div className="flex items-start gap-2 hover:text-slate-300 transition-colors duration-200">
-                <span className="text-sonar-cyan mt-0.5">•</span>
-                <span><strong className="text-slate-300">Speckle Model:</strong> 7×7 Lee filter with local variance weight W</span>
+              <div className="flex items-start gap-2">
+                <span className="text-crimson font-bold">•</span>
+                <span><strong className="text-white">Adaptive Despeckling:</strong> 7×7 Lee filter local variance weighting W</span>
               </div>
             </div>
           </div>
