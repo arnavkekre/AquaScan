@@ -6,9 +6,10 @@ import {
   Crosshair, 
   Maximize2, 
   Sliders, 
-  ShieldAlert,
-  Info,
-  Clock
+  ShieldAlert, 
+  Info, 
+  Clock,
+  Radio
 } from 'lucide-react';
 
 export default function WaterfallViewer({ 
@@ -22,19 +23,19 @@ export default function WaterfallViewer({
 
   if (loading) {
     return (
-      <div className="glass-panel rounded-2xl p-12 flex flex-col items-center justify-center min-h-[480px] border border-sonar-cyan/20">
+      <div className="rounded-[2.5rem] p-12 flex flex-col items-center justify-center min-h-[480px] bg-[#1a1a1a] border border-crimson/30 shadow-2xl">
         <div className="relative w-20 h-20 mb-6">
-          <div className="absolute inset-0 rounded-full border-2 border-sonar-cyan/30 animate-ping"></div>
-          <div className="absolute inset-2 rounded-full border-2 border-sonar-cyan animate-pulse"></div>
+          <div className="absolute inset-0 rounded-full border-2 border-crimson/30 animate-ping"></div>
+          <div className="absolute inset-2 rounded-full border-2 border-crimson animate-pulse"></div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <Crosshair className="w-8 h-8 text-sonar-cyan animate-spin" />
+            <Radio className="w-8 h-8 text-crimson animate-pulse" />
           </div>
         </div>
-        <p className="font-mono text-sm tracking-wider text-sonar-cyan mb-2">
-          PROCESSING ACOUSTIC SWATH
+        <p className="font-calsans font-bold text-base tracking-widest text-crimson mb-2 uppercase">
+          PROCESSING ACOUSTIC TELEMETRY
         </p>
-        <p className="text-xs text-slate-400 text-center max-w-sm">
-          Applying 7x7 Lee speckle filter, CLAHE histogram equalization, and running YOLOv8 ONNX inference...
+        <p className="text-xs text-zinc-400 text-center max-w-sm font-poppins">
+          Applying 7x7 Lee speckle reduction, CLAHE equalization, and running ONNX edge inference...
         </p>
       </div>
     );
@@ -42,10 +43,12 @@ export default function WaterfallViewer({
 
   if (!result) {
     return (
-      <div className="glass-panel rounded-2xl p-12 flex flex-col items-center justify-center min-h-[480px] border border-ocean-800 text-center">
-        <Crosshair className="w-12 h-12 text-slate-600 mb-4" />
-        <h3 className="font-mono text-base font-semibold text-slate-300 mb-2">No Active Acoustic Feed</h3>
-        <p className="text-xs text-slate-500 max-w-md">
+      <div className="rounded-[2.5rem] p-12 flex flex-col items-center justify-center min-h-[480px] bg-[#1a1a1a] border border-white/10 text-center shadow-xl">
+        <Crosshair className="w-12 h-12 text-zinc-600 mb-4" />
+        <h3 className="font-calsans text-base font-bold text-white mb-2 uppercase">
+          No Active Acoustic Feed
+        </h3>
+        <p className="text-xs text-zinc-400 max-w-md font-poppins">
           Select a sample sonar swath from the catalog or upload raw SSS imagery to trigger the acoustic detection pipeline.
         </p>
       </div>
@@ -79,41 +82,41 @@ export default function WaterfallViewer({
   };
 
   return (
-    <div className="glass-panel rounded-2xl overflow-hidden border border-ocean-800 flex flex-col">
+    <div className="rounded-[2rem] overflow-hidden bg-[#1a1a1a] border border-white/10 flex flex-col shadow-2xl">
       
       {/* Top Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-ocean-900/90 border-b border-ocean-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 bg-[#161616] border-b border-white/10">
         
         {/* View Switcher Tabs */}
-        <div className="flex items-center gap-1 bg-ocean-950/80 p-1 rounded-lg border border-ocean-800">
+        <div className="flex items-center gap-1.5 bg-[#121212] p-1.5 rounded-xl border border-white/10">
           <button
             onClick={() => setActiveTab('raw')}
-            className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
-              activeTab === 'raw' ? 'bg-ocean-800 text-slate-200 shadow' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 rounded-lg text-xs font-poppins font-medium transition-all ${
+              activeTab === 'raw' ? 'bg-[#242424] text-white shadow' : 'text-zinc-400 hover:text-white'
             }`}
           >
             Raw SSS
           </button>
           <button
             onClick={() => setActiveTab('despeckled')}
-            className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
-              activeTab === 'despeckled' ? 'bg-ocean-800 text-sonar-teal shadow' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 rounded-lg text-xs font-poppins font-medium transition-all ${
+              activeTab === 'despeckled' ? 'bg-[#242424] text-emerald-400 shadow' : 'text-zinc-400 hover:text-white'
             }`}
           >
             7x7 Lee Filter
           </button>
           <button
             onClick={() => setActiveTab('enhanced')}
-            className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
-              activeTab === 'enhanced' ? 'bg-ocean-800 text-sonar-cyan shadow' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 rounded-lg text-xs font-poppins font-medium transition-all ${
+              activeTab === 'enhanced' ? 'bg-[#242424] text-cyan-400 shadow' : 'text-zinc-400 hover:text-white'
             }`}
           >
             CLAHE Equalized
           </button>
           <button
             onClick={() => setActiveTab('annotated')}
-            className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all flex items-center gap-1.5 ${
-              activeTab === 'annotated' ? 'bg-sonar-cyan/20 text-sonar-cyan border border-sonar-cyan/30 shadow' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3.5 py-1 rounded-lg text-xs font-poppins font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'annotated' ? 'btn-crimson shadow-md shadow-crimson/30' : 'text-zinc-400 hover:text-white'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -121,8 +124,8 @@ export default function WaterfallViewer({
           </button>
           <button
             onClick={() => setActiveTab('split')}
-            className={`px-3 py-1 rounded text-xs font-mono font-medium transition-all ${
-              activeTab === 'split' ? 'bg-ocean-800 text-sonar-amber shadow' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1 rounded-lg text-xs font-poppins font-medium transition-all ${
+              activeTab === 'split' ? 'bg-[#242424] text-amber-400 shadow' : 'text-zinc-400 hover:text-white'
             }`}
           >
             Side-by-Side
@@ -130,17 +133,17 @@ export default function WaterfallViewer({
         </div>
 
         {/* Telemetry & Latency HUD */}
-        <div className="flex items-center gap-4 text-xs font-mono">
-          <div className="flex items-center gap-1 text-slate-400">
-            <Clock className="w-3.5 h-3.5 text-sonar-cyan" />
+        <div className="flex items-center gap-4 text-xs font-poppins">
+          <div className="flex items-center gap-1.5 text-zinc-400">
+            <Clock className="w-3.5 h-3.5 text-crimson" />
             <span>INFER:</span>
-            <span className="text-sonar-cyan font-bold">{inference_time_ms}ms</span>
+            <span className="text-crimson font-calsans font-bold text-sm">{inference_time_ms}ms</span>
           </div>
-          <div className="hidden sm:flex items-center gap-1 text-slate-400">
+          <div className="hidden sm:flex items-center gap-1 text-zinc-400">
             <span>TOTAL:</span>
-            <span className="text-slate-200">{total_latency_ms}ms</span>
+            <span className="text-white font-medium">{total_latency_ms}ms</span>
           </div>
-          <div className="flex items-center gap-1 text-slate-400">
+          <div className="flex items-center gap-1 text-zinc-400">
             <span>NOISE REDUCTION:</span>
             <span className="text-emerald-400 font-bold">{speckle_metrics?.noise_reduction_pct}%</span>
           </div>
@@ -152,36 +155,36 @@ export default function WaterfallViewer({
       <div className="relative bg-black flex items-center justify-center min-h-[460px] p-2 select-none overflow-hidden group">
         
         {/* Waterfall Scanlines Grid Overlay */}
-        <div className="absolute inset-0 sonar-scanlines z-10"></div>
+        <div className="absolute inset-0 sonar-scanlines z-10 pointer-events-none"></div>
 
         {/* Dynamic Center Nadir Line */}
-        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 border-r border-dashed border-cyan-500/30 z-10 pointer-events-none">
-          <span className="absolute top-2 left-1 text-[9px] font-mono text-cyan-500/50 uppercase tracking-widest">
+        <div className="absolute top-0 bottom-0 left-1/2 w-0.5 border-r border-dashed border-crimson/30 z-10 pointer-events-none">
+          <span className="absolute top-2 left-1 text-[9px] font-mono text-crimson/60 uppercase tracking-widest">
             NADIR (AUV TRACKLINE)
           </span>
         </div>
 
         {activeTab === 'split' ? (
           /* Side-by-Side Comparison Mode */
-          <div className="grid grid-cols-2 gap-2 w-full h-full z-0">
+          <div className="grid grid-cols-2 gap-3 w-full h-full z-0 p-2">
             <div className="relative flex flex-col items-center">
-              <span className="absolute top-2 left-2 z-20 px-2 py-0.5 rounded bg-black/70 text-[10px] font-mono text-slate-400 border border-slate-700">
+              <span className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 text-[10px] font-poppins uppercase font-semibold text-zinc-400 border border-white/10">
                 RAW ACOUSTIC FEED (NOISY)
               </span>
               <img 
                 src={raw_image_data} 
                 alt="Raw SSS" 
-                className="w-full max-h-[500px] object-contain rounded-lg border border-ocean-800"
+                className="w-full max-h-[500px] object-contain rounded-xl border border-white/10"
               />
             </div>
             <div className="relative flex flex-col items-center">
-              <span className="absolute top-2 left-2 z-20 px-2 py-0.5 rounded bg-black/70 text-[10px] font-mono text-sonar-cyan border border-sonar-cyan/40">
-                FILTERED + AI ANNOTATED
+              <span className="absolute top-3 left-3 z-20 px-2.5 py-1 rounded-md bg-black/80 text-[10px] font-poppins uppercase font-semibold text-crimson border border-crimson/50">
+                DESPECKLED + AI ANNOTATED
               </span>
               <img 
                 src={annotated_image_data} 
                 alt="AI Annotated" 
-                className="w-full max-h-[500px] object-contain rounded-lg border border-sonar-cyan/20"
+                className="w-full max-h-[500px] object-contain rounded-xl border border-crimson/40 shadow-lg"
               />
             </div>
           </div>
@@ -194,7 +197,7 @@ export default function WaterfallViewer({
             <img 
               src={currentImg} 
               alt="Side Scan Sonar Swath" 
-              className="max-h-[500px] w-auto object-contain rounded-lg shadow-2xl transition-all"
+              className="max-h-[500px] w-auto object-contain rounded-xl shadow-2xl transition-all"
             />
 
             {/* Clickable Bounding Box Hit Areas */}
@@ -220,7 +223,7 @@ export default function WaterfallViewer({
                   }}
                   className={`absolute cursor-pointer transition-all border-2 rounded ${
                     isSelected 
-                      ? 'border-white ring-4 ring-sonar-cyan/50 bg-sonar-cyan/20 z-30' 
+                      ? 'border-white ring-4 ring-crimson/60 bg-crimson/25 z-30' 
                       : 'border-transparent hover:border-white/80 hover:bg-white/10 z-20'
                   }`}
                   title={`${det.display_name} (${det.confidence_pct}%)`}
@@ -232,13 +235,13 @@ export default function WaterfallViewer({
 
         {/* HUD Crosshair Position Footer */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none z-20">
-          <div className="px-2.5 py-1 rounded bg-ocean-950/85 backdrop-blur border border-ocean-800 text-[11px] font-mono text-slate-300 flex items-center gap-3">
+          <div className="px-3 py-1.5 rounded-xl bg-[#121212]/90 backdrop-blur border border-white/10 text-xs font-poppins text-zinc-300 flex items-center gap-4">
             <span>PIXELS: <strong className="text-white">X:{cursorPos.x} Y:{cursorPos.y}</strong></span>
-            <span>ACROSS-TRACK: <strong className="text-sonar-cyan">{cursorPos.across_m || 0}m</strong></span>
+            <span>ACROSS-TRACK: <strong className="text-crimson font-semibold">{cursorPos.across_m || 0}m</strong></span>
             <span className="hidden md:inline">TARGETS: <strong className="text-emerald-400">{detections.length}</strong></span>
           </div>
 
-          <div className="px-2.5 py-1 rounded bg-ocean-950/85 backdrop-blur border border-ocean-800 text-[11px] font-mono text-slate-400">
+          <div className="px-3 py-1.5 rounded-xl bg-[#121212]/90 backdrop-blur border border-white/10 text-xs font-poppins text-zinc-400">
             SWATH: 100m • RESOLUTION: 0.15m/px
           </div>
         </div>
@@ -247,9 +250,9 @@ export default function WaterfallViewer({
 
       {/* Detection Strip Footer */}
       {detections.length > 0 && (
-        <div className="px-4 py-2.5 bg-ocean-900/70 border-t border-ocean-800 flex items-center gap-2 overflow-x-auto">
-          <span className="text-xs font-mono text-slate-400 flex items-center gap-1 mr-2 flex-shrink-0">
-            <ShieldAlert className="w-3.5 h-3.5 text-sonar-cyan" />
+        <div className="px-5 py-3 bg-[#161616] border-t border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <span className="text-xs font-calsans font-bold tracking-wider uppercase text-zinc-400 flex items-center gap-1.5 mr-2 flex-shrink-0">
+            <ShieldAlert className="w-4 h-4 text-crimson" />
             TARGETS:
           </span>
           {detections.map((det) => {
@@ -258,18 +261,18 @@ export default function WaterfallViewer({
               <button
                 key={det.id}
                 onClick={() => onSelectDetection && onSelectDetection(det)}
-                className={`flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-mono transition-all flex-shrink-0 border ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-poppins font-medium transition-all flex-shrink-0 border ${
                   isSelected 
-                    ? 'bg-sonar-cyan/20 border-sonar-cyan text-white shadow-sm' 
-                    : 'bg-ocean-950/60 border-ocean-800 text-slate-300 hover:border-slate-600'
+                    ? 'btn-crimson shadow-md shadow-crimson/30' 
+                    : 'bg-[#121212] border-white/10 text-zinc-300 hover:border-crimson/50'
                 }`}
               >
                 <span 
                   className="w-2 h-2 rounded-full" 
-                  style={{ backgroundColor: det.color || '#00F0FF' }}
+                  style={{ backgroundColor: det.color || '#e11d48' }}
                 />
-                <span>{det.display_name}</span>
-                <span className="text-slate-400 font-bold">{det.confidence_pct}%</span>
+                <span className="font-semibold">{det.display_name}</span>
+                <span className="opacity-80 text-[11px] font-bold">{det.confidence_pct}%</span>
               </button>
             );
           })}
